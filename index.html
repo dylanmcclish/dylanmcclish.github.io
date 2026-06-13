@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dylan McClish</title>
+  <meta name="description" content="Dylan McClish — senior at Princeton University, Class of '27, studying Operations Research and Financial Engineering with a minor in Mathematics. Interests in reinforcement learning in finance, financial econometrics, and quantitative research and trading." />
+  <meta name="author" content="Dylan McClish" />
+  <link rel="canonical" href="https://dylanmcclish.github.io/" />
+
+  <!-- Open Graph (for social previews) -->
+  <meta property="og:type"        content="profile" />
+  <meta property="og:title"       content="Dylan McClish" />
+  <meta property="og:description" content="Senior at Princeton University (Class of '27), studying Operations Research and Financial Engineering with a minor in Mathematics." />
+  <meta property="og:url"         content="https://dylanmcclish.github.io/" />
+  <meta property="og:image"       content="https://dylanmcclish.github.io/profile.jpg" />
+
+  <!-- Twitter card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Dylan McClish" />
+  <meta name="twitter:description" content="Senior at Princeton University (Class of '27), studying Operations Research and Financial Engineering with a minor in Mathematics." />
+  <meta name="twitter:image"       content="https://dylanmcclish.github.io/profile.jpg" />
+
+  <!-- JSON-LD Person schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Dylan McClish",
+    "givenName": "Dylan",
+    "familyName": "McClish",
+    "url": "https://dylanmcclish.github.io/",
+    "image": "https://dylanmcclish.github.io/profile.jpg",
+    "jobTitle": "Student",
+    "description": "Senior at Princeton University (Class of '27), studying Operations Research and Financial Engineering with a minor in Mathematics. Interests in reinforcement learning in finance, financial econometrics, and quantitative research and trading.",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Princeton University",
+      "sameAs": "https://www.princeton.edu"
+    },
+    "knowsAbout": [
+      "Reinforcement Learning",
+      "Financial Econometrics",
+      "Quantitative Trading",
+      "Operations Research",
+      "Financial Engineering"
+    ],
+    "sameAs": [
+      "https://github.com/dylanmcclish",
+      "https://www.linkedin.com/in/dylan-t-mcclish-5917ba292/"
+    ]
+  }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #222;
+      background: #fff;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 60px;
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+    .header-text {
+      flex: 1;
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .bio {
+      color: #333;
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    .bio a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    .bio a:hover { text-decoration: underline; }
+
+    .profile-pic {
+      width: 200px;
+      height: 200px;
+      min-width: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f0f0f0;
+    }
+
+    nav {
+      margin-top: 18px;
+      display: flex;
+      gap: 16px;
+    }
+    nav a {
+      color: #1a73e8;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    nav a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column-reverse;
+        gap: 24px;
+        text-align: left;
+      }
+      .profile-pic {
+        width: 160px;
+        height: 160px;
+        min-width: 160px;
+      }
+    }
+
+    /* Section */
+    section {
+      margin-bottom: 60px;
+    }
+    section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    /* Project card */
+    .project {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 36px;
+      align-items: flex-start;
+    }
+    .project-thumb {
+      width: 140px;
+      min-width: 140px;
+      height: 100px;
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 0.75rem;
+      text-align: center;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .project-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .project-info .meta {
+      font-style: italic;
+      color: #444;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+    }
+    .project-info p {
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .project-info a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    .project-info a:hover { text-decoration: underline; }
+
+    /* Course table */
+    .course-year {
+      margin-bottom: 32px;
+    }
+    .course-year h3 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #888;
+      margin-bottom: 14px;
+    }
+    .course {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .course:last-child { border-bottom: none; }
+    .course-code {
+      min-width: 80px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #888;
+      padding-top: 2px;
+    }
+    .course-body h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .course-body p {
+      font-size: 0.87rem;
+      color: #555;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-text">
+      <h1>Dylan McClish</h1>
+      <p class="bio">
+        I'm a senior at <a href="https://www.princeton.edu" target="_blank">Princeton University</a>, Class of '27,
+        studying <a href="https://orfe.princeton.edu" target="_blank">Operations Research and Financial Engineering</a>
+        with a minor in <a href="https://www.math.princeton.edu" target="_blank">Mathematics</a>.
+        I'm interested in reinforcement learning in finance, financial econometrics,
+        and quantitative research and trading. I've worked as a quant intern at
+        <a href="https://www.transmarketgroup.com" target="_blank">TransMarket Group</a> and as a data engineer at
+        <a href="https://www.linkedin.com/company/lasagnahq" target="_blank">Lasagna Capital</a>.
+      </p>
+      <nav>
+        <a href="mailto:dtm@princeton.edu">Email</a> /
+        <a href="https://github.com/dylanmcclish" target="_blank">GitHub</a> /
+        <a href="https://www.linkedin.com/in/dylan-t-mcclish-5917ba292/" target="_blank">LinkedIn</a>
+      </nav>
+    </div>
+    <img class="profile-pic" src="profile.jpg" alt="Dylan McClish" />
+  </header>
+
+  <!-- RESEARCH -->
+  <section id="research">
+    <h2>Research</h2>
+
+    <div class="project">
+      <div class="project-thumb project-thumb--swarm">
+        <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="30" r="4" fill="#aaa"/>
+          <circle cx="18" cy="15" r="3" fill="#bbb"/>
+          <circle cx="62" cy="12" r="3" fill="#bbb"/>
+          <circle cx="14" cy="44" r="3" fill="#bbb"/>
+          <circle cx="58" cy="48" r="3" fill="#bbb"/>
+          <circle cx="35" cy="52" r="3" fill="#bbb"/>
+          <circle cx="66" cy="30" r="3" fill="#bbb"/>
+          <line x1="40" y1="30" x2="18" y2="15" stroke="#ccc" stroke-width="1"/>
+          <line x1="40" y1="30" x2="62" y2="12" stroke="#ccc" stroke-width="1"/>
+          <line x1="40" y1="30" x2="14" y2="44" stroke="#ccc" stroke-width="1"/>
+          <line x1="40" y1="30" x2="58" y2="48" stroke="#ccc" stroke-width="1"/>
+          <line x1="40" y1="30" x2="35" y2="52" stroke="#ccc" stroke-width="1"/>
+          <line x1="40" y1="30" x2="66" y2="30" stroke="#ccc" stroke-width="1"/>
+          <line x1="18" y1="15" x2="62" y2="12" stroke="#ddd" stroke-width="0.8"/>
+          <line x1="14" y1="44" x2="35" y2="52" stroke="#ddd" stroke-width="0.8"/>
+          <line x1="58" y1="48" x2="66" y2="30" stroke="#ddd" stroke-width="0.8"/>
+        </svg>
+      </div>
+      <div class="project-info">
+        <h3>Reinforcement Learning for Autonomous Swarm Robotics</h3>
+        <div class="meta">AHS Science Research Institute · 2022–2023 · AI / Intelligent Systems</div>
+        <p>
+          This was a project I did through the AHS Science Research Institute, where I wanted to see whether a swarm of autonomous robots could learn a coordinated exploration policy for an unknown environment. The setup is built on top of SLAM (Simultaneous Localization and Mapping), and I trained the agents with Deep Q-Learning (DQN), which approximates the action-value function with a neural network. The reason a neural network is needed here is that the joint state space across multiple agents is way too large for a tabular Q-table to handle. The agents learn to cover as much of the space as possible while avoiding ground that another agent has already mapped. I ran all of the experiments in WeBots, which is a physics-based robotics simulator with realistic collisions and sensor noise. In the end, the trained swarm consistently beat the uncoordinated baselines on both coverage time and map completeness.
+        </p>
+        <p style="margin-top: 8px; font-size: 0.83rem; color: #777;">
+          5th Place · Florida SSEF &nbsp;|&nbsp; Navy League Award &amp; Scholarship &nbsp;|&nbsp; District Champion PBRSEF &nbsp;|&nbsp; Superior Rating · Sigma XI International Research Symposium &nbsp;|&nbsp; MAD Science Grant Recipient
+        </p>
+        <p style="margin-top: 6px; font-size: 0.87rem;"><a href="https://github.com/dylanmcclish/reinforcement_swarm_SRI" target="_blank">GitHub →</a></p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <div class="project">
+      <div class="project-thumb">
+        <img src="thesis-rl-sde/gbm-euler-path.png" alt="Simulated stock price path generated by geometric Brownian motion via an Euler scheme" />
+      </div>
+      <div class="project-info">
+        <h3>Reinforcement Learning on Synthetic Financial Time Series</h3>
+        <div class="meta">Senior Thesis · Princeton University · Python · In Progress · 2026</div>
+        <p>
+          This is my ongoing senior thesis, where I look at how reinforcement learning agents can learn trading policies on financial time series. Instead of relying on a single historical record, I generate the training data myself from stochastic differential equations. I start with geometric Brownian motion and then build up to richer dynamics, and each one gets discretized with an Euler-Maruyama scheme so that I can produce large families of synthetic price paths. The agent observes a discretized market state and learns a value function through Q-learning, and I evaluate it by looking at the distribution of final PnL across thousands of simulated paths against a random baseline. The reason I like working in this controlled, model-driven setting is that it lets me probe how an agent's learned behavior depends on the underlying data-generating process before I move on to real market data.
+        </p>
+        <p style="margin-top: 6px; font-size: 0.87rem;"><a href="https://github.com/dylanmcclish/thesis_playground" target="_blank">Code &rarr;</a></p>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-thumb">
+        <img src="orf504-financial-econometrics/pe-ratio.png" alt="S&amp;P 500 P/E Ratio 1871-2018" />
+      </div>
+      <div class="project-info">
+        <h3>Return Predictability &amp; Interest Rate Models</h3>
+        <div class="meta">ORF 504 Financial Econometrics · Princeton University · R · Spring 2026</div>
+        <p>
+          This is a two-part empirical study that spans both equities and fixed income. In the first part, I ask whether the earnings yield and dividend yield of the S&amp;P 500 can predict its own returns at horizons ranging from one month out to four years, using 147 years of price and valuation data. The interesting result here is that the R² climbs sharply as the horizon grows, which hints at long-run reversion in equity valuations. In the second part, I fit the Vasicek and CIR short-rate models to over 60 years of 5-year Treasury yields, using both exact MLE and an Euler approximation, and recover the mean-reversion speed, long-run level, and volatility out of each one.
+        </p>
+        <p style="margin-top: 6px; font-size: 0.87rem;"><a href="orf504-financial-econometrics/analysis.rmd" target="_blank">Code →</a> &nbsp;·&nbsp; <a href="orf504-financial-econometrics/" target="_blank">Data →</a></p>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-thumb">
+        <img src="orf504-stylized-facts/squared-acf.png" alt="NASDAQ Daily Squared Returns ACF" />
+      </div>
+      <div class="project-info">
+        <h3>Stylized Facts in Financial Time Series</h3>
+        <div class="meta">ORF 504 Financial Econometrics · Princeton University · R · Spring 2026</div>
+        <p>
+          This is a three-part study of return dynamics that mixes empirical work with simulation. In the first part, I document the stylized facts in NASDAQ and IBM returns at daily, weekly, and monthly frequencies. The returns themselves look like white noise, but their squares clearly do not, and the tails stay fatter than normal even as you aggregate up to longer frequencies. In the second part, I stress-test the standard portmanteau diagnostics through simulation and confirm that Box-Pierce and Ljung-Box both hit their asymptotic χ²(m) targets. In the third part, I break those same diagnostics with a nonlinear process whose ACF stays flat while its squared ACF lights up.
+        </p>
+        <p style="margin-top: 6px; font-size: 0.87rem;"><a href="orf504-stylized-facts/analysis.rmd" target="_blank">Code →</a> &nbsp;·&nbsp; <a href="orf504-stylized-facts/" target="_blank">Data →</a></p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- COURSEWORK -->
+  <section id="coursework">
+    <h2>Coursework</h2>
+
+    <div class="course-year">
+      <h3>Junior Year · 2025–2026</h3>
+
+      <div class="course">
+        <div class="course-code">ORF 504</div>
+        <div class="course-body">
+          <h4>Financial Econometrics</h4>
+          <p>Econometric and statistical methods applied to finance, covering asset return models, linear time series analysis, volatility models, CAPM, multifactor pricing, portfolio allocation, and simulation methods for financial derivatives.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 478</div>
+        <div class="course-body">
+          <h4>The Probabilistic Method</h4>
+          <p>Probabilistic methods in combinatorics and theoretical computer science, including linearity of expectation, the second moment method, the Lovász Local Lemma, martingales, and large deviation inequalities.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 375</div>
+        <div class="course-body">
+          <h4>Introduction to Graph Theory</h4>
+          <p>Fundamental theorems and algorithms of graph theory including connectivity, matchings, graph coloring, planarity, the four-color theorem, extremal problems, and network flows.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 325</div>
+        <div class="course-body">
+          <h4>Analysis I: Fourier Series and PDE</h4>
+          <p>Fourier series, Fourier transforms, and their applications to classical partial differential equations such as the heat and wave equations, organized around Fourier analysis on periodic functions, the real line, and higher dimensions.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 377</div>
+        <div class="course-body">
+          <h4>Combinatorial Mathematics</h4>
+          <p>Combinatorial techniques including the pigeonhole principle, inclusion-exclusion, generating functions, Ramsey theory, extremal combinatorics, and connections to linear algebra and spectral graph theory.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 320</div>
+        <div class="course-body">
+          <h4>Introduction to Real Analysis</h4>
+          <p>Theory of Lebesgue measure and integration on the line and in n-dimensional space, with a rigorous foundation in the construction and properties of Lebesgue measure and the theory of Fourier series.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAE 305</div>
+        <div class="course-body">
+          <h4>Mathematics in Engineering I</h4>
+          <p>Ordinary differential equations and their engineering applications, including linear and nonlinear equations, Laplace transforms, eigenvalue methods, series solutions, and an introduction to partial differential equations.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course-year">
+      <h3>Sophomore Year · 2024–2025</h3>
+
+      <div class="course">
+        <div class="course-code">ORF 407</div>
+        <div class="course-body">
+          <h4>Fundamentals of Queueing Theory</h4>
+          <p>Stochastic models of resource sharing covering Erlang's formulas, Little's law, Poisson processes, renewal processes, and equilibrium Markov chains, with applications in call centers, healthcare, and smart cities.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">ORF 335</div>
+        <div class="course-body">
+          <h4>Introduction to Financial Mathematics</h4>
+          <p>Quantitative methods for designing and analyzing financial products including arbitrage pricing, risk-neutral pricing in discrete and continuous time, Black-Scholes, Heston model, credit derivatives, and term structure of interest rates.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">ORF 307</div>
+        <div class="course-body">
+          <h4>Optimization</h4>
+          <p>Analytical and computational tools for optimization including least-squares methods, linear programming, duality, the simplex method, interior point methods, network flow, and integer programming.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">ORF 309</div>
+        <div class="course-body">
+          <h4>Probability and Stochastic Systems</h4>
+          <p>Probability theory and its applications in modeling uncertainty, covering Poisson processes, random walks, Brownian motion, branching processes, and Markov chains with decision-making applications.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">COS 324</div>
+        <div class="course-body">
+          <h4>Introduction to Machine Learning</h4>
+          <p>Broad introduction to machine learning paradigms including linear models, SVMs, clustering, dimensionality reduction, deep neural networks, and reinforcement learning, with Python implementations.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">COS 226</div>
+        <div class="course-body">
+          <h4>Algorithms and Data Structures</h4>
+          <p>Survey of fundamental algorithms and data structures in use today, with emphasis on sorting, searching, and graph algorithms, including analysis of performance and practical applications.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">COS 217</div>
+        <div class="course-body">
+          <h4>Introduction to Programming Systems</h4>
+          <p>Lower-level programming in C focusing on modularity, abstraction, testing, debugging, and performance, with an overview of computing environments and architectures foundational to advanced computer science.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course-year">
+      <h3>First Year · 2023–2024</h3>
+
+      <div class="course">
+        <div class="course-code">ORF 245</div>
+        <div class="course-body">
+          <h4>Fundamentals of Statistics</h4>
+          <p>Introduction to probability and statistics covering estimation, confidence intervals, hypothesis testing, and regression, using real-world datasets and the statistical software R.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 204</div>
+        <div class="course-body">
+          <h4>Advanced Linear Algebra with Applications</h4>
+          <p>Abstract treatment of linear systems, transformations, eigenvalues, spectral theorem, SVD, and Jordan normal forms, with applications in cryptography, image compression, machine learning, and ranking algorithms.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">MAT 203</div>
+        <div class="course-body">
+          <h4>Advanced Vector Calculus</h4>
+          <p>Rigorous multivariable calculus covering vectors, differentiation and integration in several variables, vector fields, line and flux integrals, and higher-dimensional generalizations of the Fundamental Theorem of Calculus.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">COS 126</div>
+        <div class="course-body">
+          <h4>Computer Science: An Interdisciplinary Approach</h4>
+          <p>Introduction to computer science through scientific, engineering, and commercial applications, covering hardware and software systems, programming in Java, algorithms, data structures, and scientific computing.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">PHY 106</div>
+        <div class="course-body">
+          <h4>Advanced Physics (Electromagnetism)</h4>
+          <p>Rigorous treatment of classical electricity and magnetism, emphasizing the unification of electric and magnetic forces and their connection to special relativity.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">PHY 105</div>
+        <div class="course-body">
+          <h4>Advanced Physics (Mechanics)</h4>
+          <p>Mathematically rigorous classical mechanics including variational methods, Lagrangian dynamics, central-force motion, rigid body motion, small oscillations, and an introduction to special relativity.</p>
+        </div>
+      </div>
+
+      <div class="course">
+        <div class="course-code">CHM 207</div>
+        <div class="course-body">
+          <h4>General Chemistry: Applications in Modern Science</h4>
+          <p>Fundamental chemistry principles — stoichiometry, equilibria, thermodynamics, quantum mechanics, and chemical bonding — applied to modern materials including metals, semiconductors, and polymers.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- OUTSIDE OF SCHOOL -->
+  <section id="outside">
+    <h2>Outside of School</h2>
+    <p class="bio" style="max-width: 700px;">
+      I'm an avid athlete — I run <a href="https://goprincetontigers.com/sports/mens-track-and-field" target="_blank">D1 Track &amp; Field</a> at Princeton.
+      I also love to hike and explore nature whenever I get the chance.
+    </p>
+  </section>
+
+</body>
+</html>

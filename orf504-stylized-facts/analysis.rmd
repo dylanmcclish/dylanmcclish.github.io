@@ -1,0 +1,311 @@
+---
+title: "Stylized Facts in Financial Time Series: Empirical Properties, Autocorrelation Tests, and Nonlinear Dependence"
+author: "Dylan McClish"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 10, fig.height = 5)
+```
+
+This analysis examines the statistical properties of equity returns in three parts:
+
+1. **Empirical stylized facts** — distributional and autocorrelation properties of NASDAQ and
+   IBM returns across daily, weekly, and monthly frequencies
+2. **Validation of white-noise tests** — Monte Carlo simulation confirming that the
+   Portmanteau (Box-Pierce) and Ljung-Box Q statistics converge to their theoretical
+   chi-squared distributions as sample size grows
+3. **Nonlinear dependence** — a time series with zero linear autocorrelation but strong
+   nonlinear structure, illustrating the limits of ACF-based tests
+
+---
+
+# Part I — Empirical Properties of NASDAQ and IBM Returns
+
+## Load and Process Data
+
+```{r load-data}
+library(ggplot2)
+
+# helper: load + clean a price CSV, compute simple and log returns
+load_returns <- function(file, date_fmt = "%b %d, %Y") {
+  df <- read.csv(file, stringsAsFactors = FALSE)
+  df$price <- as.numeric(gsub("[$,]", "", trimws(df$Close)))
+  df$Date  <- as.Date(df$Date, format = date_fmt)
+  df <- df[order(df$Date), ]
+  df$simple_ret <- c(NA, diff(df$price) / head(df$price, -1))
+  df$log_ret    <- c(NA, diff(log(df$price)))
+  df
+}
+
+nasdaq_daily   <- load_returns("nasdaq_daily.csv")
+nasdaq_weekly  <- load_returns("nasdaq_weekly.csv")
+nasdaq_monthly <- load_returns("nasdaq_monthly.csv")
+
+ibm_daily      <- load_returns("ibm_daily.csv")
+ibm_weekly     <- load_returns("ibm_weekly.csv")
+ibm_monthly    <- load_returns("ibm_monthly.csv")
+```
+
+---
+
+## 1A — Price Levels and Log Return Time Series
+
+Plotting price levels against log returns illustrates the signature volatility clustering of
+financial markets: large moves tend to cluster together in time regardless of sign.
+
+```{r ts-plots}
+par(mfrow = c(1, 2))
+plot(nasdaq_daily$Date, nasdaq_daily$price, type = "l", col = "steelblue",
+     main = "NASDAQ Daily Prices", xlab = "", ylab = "Index Level")
+plot(nasdaq_daily$Date[-1], na.omit(nasdaq_daily$log_ret), type = "l", col = "steelblue",
+     main = "NASDAQ Daily Log Returns", xlab = "", ylab = "Log Return")
+par(mfrow = c(1, 1))
+```
+
+```{r ibm-ts}
+par(mfrow = c(1, 2))
+plot(ibm_daily$Date, ibm_daily$price, type = "l", col = "darkorange",
+     main = "IBM Daily Prices", xlab = "", ylab = "Price ($)")
+plot(ibm_daily$Date[-1], na.omit(ibm_daily$log_ret), type = "l", col = "darkorange",
+     main = "IBM Daily Log Returns", xlab = "", ylab = "Log Return")
+par(mfrow = c(1, 1))
+```
+
+---
+
+## 1B — Simple vs. Log Returns
+
+Log returns (r_t = log P_t/P_{t-1}) and simple returns (R_t = P_t/P_{t-1} − 1) are nearly
+identical for small moves but diverge for large ones. The tight 45° relationship confirms the
+log approximation r ≈ R holds well for daily and weekly data; monthly data shows more spread.
+
+```{r simple-vs-log}
+plot_simple_vs_log <- function(df, title) {
+  r <- na.omit(data.frame(simple = df$simple_ret, log = df$log_ret))
+  plot(r$simple, r$log, pch = 20, cex = 0.4, col = rgb(0,0,0,0.3),
+       xlab = "Simple Return", ylab = "Log Return", main = title)
+  abline(0, 1, col = "red", lty = 2)
+}
+
+par(mfrow = c(2, 3))
+plot_simple_vs_log(nasdaq_daily,   "NASDAQ Daily")
+plot_simple_vs_log(nasdaq_weekly,  "NASDAQ Weekly")
+plot_simple_vs_log(nasdaq_monthly, "NASDAQ Monthly")
+plot_simple_vs_log(ibm_daily,      "IBM Daily")
+plot_simple_vs_log(ibm_weekly,     "IBM Weekly")
+plot_simple_vs_log(ibm_monthly,    "IBM Monthly")
+par(mfrow = c(1, 1))
+```
+
+---
+
+## 1C — Autocorrelation: Returns, Squared Returns, Absolute Returns
+
+A key stylized fact: **log returns are nearly uncorrelated** (consistent with weak-form
+efficiency), but **squared and absolute returns exhibit significant positive autocorrelation**
+(volatility clustering). This contrast is the empirical motivation for GARCH-type models.
+
+```{r acf-plots}
+plot_acf_triple <- function(df, label) {
+  r  <- na.omit(df$log_ret)
+  r2 <- r^2
+  ar <- abs(r)
+  par(mfrow = c(1, 3))
+  acf(r,  lag.max = 30, main = paste(label, "— Log Returns"))
+  acf(r2, lag.max = 30, main = paste(label, "— Squared Returns"))
+  acf(ar, lag.max = 30, main = paste(label, "— Absolute Returns"))
+  par(mfrow = c(1, 1))
+}
+
+plot_acf_triple(nasdaq_daily,   "NASDAQ Daily")
+plot_acf_triple(nasdaq_weekly,  "NASDAQ Weekly")
+plot_acf_triple(nasdaq_monthly, "NASDAQ Monthly")
+plot_acf_triple(ibm_daily,      "IBM Daily")
+```
+
+The near-zero ACF of raw returns contrasts sharply with the persistent ACF of squared and
+absolute returns — the latter two are proxies for volatility, and their correlation structure
+is the empirical fingerprint of ARCH effects.
+
+---
+
+## 1D — Distributional Properties: Histograms and Q-Q Plots
+
+```{r dist-plots}
+plot_dist <- function(df, label) {
+  r <- na.omit(df$log_ret)
+  par(mfrow = c(1, 2))
+  hist(r, breaks = 50, freq = FALSE, col = "lightblue", border = "white",
+       main = paste(label, "— Distribution"), xlab = "Log Return")
+  curve(dnorm(x, mean(r), sd(r)), add = TRUE, col = "red", lwd = 2)
+  qqnorm(r, main = paste(label, "— Q-Q Plot"), pch = 20, cex = 0.5)
+  qqline(r, col = "red")
+  par(mfrow = c(1, 1))
+}
+
+plot_dist(nasdaq_daily,   "NASDAQ Daily")
+plot_dist(nasdaq_weekly,  "NASDAQ Weekly")
+plot_dist(nasdaq_monthly, "NASDAQ Monthly")
+plot_dist(ibm_daily,      "IBM Daily")
+```
+
+The S-shaped Q-Q plot deviation at both tails confirms **leptokurtosis** (fat tails) at
+all frequencies — daily returns deviate most severely, consistent with the finding that
+the normal approximation improves as frequency decreases (CLT aggregation effect).
+
+---
+
+# Part II — Monte Carlo Validation of Autocorrelation Tests
+
+Before applying white-noise tests to real data, we verify that the test statistics converge
+to their theoretical null distributions. We simulate 400 i.i.d. N(0,1) series and check:
+
+- **Z = √T · ρ̂(1)**: should converge to N(0,1)
+- **Q_m (Box-Pierce)**: should converge to χ²(m)
+- **Q*_m (Ljung-Box)**: a finite-sample corrected version, also targeting χ²(m)
+
+at lag lengths m ∈ {3, 6, 12} and sample sizes T ∈ {100, 500}.
+
+```{r simulation-setup}
+set.seed(42)
+n_sim    <- 400
+m_values <- c(3, 6, 12)
+
+run_simulation <- function(T) {
+  Z     <- numeric(n_sim)
+  Q     <- lapply(seq_along(m_values), function(i) numeric(n_sim))
+  Q_star <- lapply(seq_along(m_values), function(i) numeric(n_sim))
+
+  for (sim in 1:n_sim) {
+    x       <- rnorm(T)
+    acf_all <- acf(x, lag.max = 12, plot = FALSE)$acf[-1]
+    rho1    <- acf_all[1]
+    Z[sim]  <- sqrt(T) * rho1
+
+    for (j in seq_along(m_values)) {
+      m          <- m_values[j]
+      Q[[j]][sim]      <- T * sum(acf_all[1:m]^2)
+      Q_star[[j]][sim] <- T * (T + 2) * sum(acf_all[1:m]^2 / (T - 1:m))
+    }
+  }
+  list(Z = Z, Q = Q, Q_star = Q_star)
+}
+
+sim100 <- run_simulation(100)
+sim500 <- run_simulation(500)
+```
+
+## Convergence of Z Statistic to N(0,1)
+
+```{r z-histograms}
+par(mfrow = c(1, 2))
+for (res in list(list(sim100$Z, "T = 100"), list(sim500$Z, "T = 500"))) {
+  hist(res[[1]], breaks = 30, freq = FALSE, col = "lightblue", border = "white",
+       main = paste("Z =", expression(sqrt(T)), "· ρ̂(1),", res[[2]]),
+       xlab = "Z")
+  curve(dnorm(x), add = TRUE, col = "red", lwd = 2)
+}
+par(mfrow = c(1, 1))
+```
+
+## Convergence of Q_m and Q*_m to χ²(m)
+
+```{r q-histograms}
+plot_q_hist <- function(res, T_label) {
+  par(mfrow = c(2, 3))
+  for (j in seq_along(m_values)) {
+    m <- m_values[j]
+    hist(res$Q[[j]], breaks = 30, freq = FALSE, col = "lightgreen", border = "white",
+         main = paste0("Q_", m, " (Box-Pierce), ", T_label), xlab = "Statistic")
+    curve(dchisq(x, m), add = TRUE, col = "red", lwd = 2)
+
+    hist(res$Q_star[[j]], breaks = 30, freq = FALSE, col = "lightyellow", border = "white",
+         main = paste0("Q*_", m, " (Ljung-Box), ", T_label), xlab = "Statistic")
+    curve(dchisq(x, m), add = TRUE, col = "red", lwd = 2)
+  }
+  par(mfrow = c(1, 1))
+}
+
+plot_q_hist(sim100, "T=100")
+plot_q_hist(sim500, "T=500")
+```
+
+## Empirical vs. Theoretical Percentiles
+
+```{r percentile-table}
+cat("=== T = 100 ===\n")
+cat(sprintf("Z:  90th=%.3f (theory %.3f)  95th=%.3f (%.3f)  99th=%.3f (%.3f)\n",
+  quantile(sim100$Z, 0.90), qnorm(0.90),
+  quantile(sim100$Z, 0.95), qnorm(0.95),
+  quantile(sim100$Z, 0.99), qnorm(0.99)))
+
+for (j in seq_along(m_values)) {
+  m <- m_values[j]
+  cat(sprintf("Q_%d: 95th=%.3f (theory %.3f)  99th=%.3f (%.3f)\n", m,
+    quantile(sim100$Q[[j]], 0.95), qchisq(0.95, m),
+    quantile(sim100$Q[[j]], 0.99), qchisq(0.99, m)))
+  cat(sprintf("Q*_%d: 95th=%.3f (theory %.3f)  99th=%.3f (%.3f)\n", m,
+    quantile(sim100$Q_star[[j]], 0.95), qchisq(0.95, m),
+    quantile(sim100$Q_star[[j]], 0.99), qchisq(0.99, m)))
+}
+
+cat("\n=== T = 500 ===\n")
+cat(sprintf("Z:  90th=%.3f (theory %.3f)  95th=%.3f (%.3f)  99th=%.3f (%.3f)\n",
+  quantile(sim500$Z, 0.90), qnorm(0.90),
+  quantile(sim500$Z, 0.95), qnorm(0.95),
+  quantile(sim500$Z, 0.99), qnorm(0.99)))
+
+for (j in seq_along(m_values)) {
+  m <- m_values[j]
+  cat(sprintf("Q_%d: 95th=%.3f (theory %.3f)  99th=%.3f (%.3f)\n", m,
+    quantile(sim500$Q[[j]], 0.95), qchisq(0.95, m),
+    quantile(sim500$Q[[j]], 0.99), qchisq(0.99, m)))
+}
+```
+
+At T=100 the Ljung-Box Q* tracks the chi-squared critical values more accurately than the
+plain Box-Pierce Q, confirming its finite-sample advantage. By T=500 both statistics are
+essentially indistinguishable from the theoretical distribution.
+
+---
+
+# Part III — Nonlinear Dependence
+
+A critical limitation of ACF-based tests: they detect **linear** autocorrelation only.
+We simulate a nonlinear process:
+
+  X_t = 0.8 · ε²_{t−1} / (1 + ε²_{t−1}) + ε_t
+
+where ε_t is i.i.d. N(0,1). This process has **zero linear autocorrelation** (ACF will
+look flat) but the conditional mean depends nonlinearly on the past shock magnitude —
+structure invisible to Box-Pierce and Ljung-Box tests.
+
+```{r nonlinear-series}
+set.seed(42)
+T       <- 400
+epsilon <- rnorm(T)
+X       <- numeric(T)
+X[1]    <- epsilon[1]
+
+for (t in 2:T)
+  X[t] <- 0.8 * epsilon[t-1]^2 / (1 + epsilon[t-1]^2) + epsilon[t]
+
+par(mfrow = c(1, 1))
+plot(X, type = "l", col = "steelblue",
+     main = expression("Nonlinear Series: " * X[t] == frac(0.8 * epsilon[t-1]^2, 1 + epsilon[t-1]^2) + epsilon[t]),
+     xlab = "t", ylab = expression(X[t]))
+```
+
+```{r nonlinear-acf}
+par(mfrow = c(1, 2))
+acf(X,    lag.max = 30, main = "ACF of X_t  (appears white noise)")
+acf(X^2,  lag.max = 30, main = "ACF of X²_t  (reveals nonlinear structure)")
+par(mfrow = c(1, 1))
+```
+
+The ACF of X_t is indistinguishable from white noise — a standard Ljung-Box test would
+fail to reject the null. But the ACF of X²_t exposes the hidden structure: the squared
+series has significant positive autocorrelation, exactly analogous to the ARCH signature
+seen in real return data in Part I. This illustrates why testing for ARCH effects requires
+looking beyond first-moment autocorrelation.
