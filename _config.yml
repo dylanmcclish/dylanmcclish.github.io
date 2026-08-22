@@ -6,7 +6,7 @@ url: "https://dylanmcclish.github.io"
 author: Dylan McClish
 
 markdown: kramdown
-permalink: /blog/:title/
+permalink: /thoughts/:title/
 
 exclude:
   - Gemfile
