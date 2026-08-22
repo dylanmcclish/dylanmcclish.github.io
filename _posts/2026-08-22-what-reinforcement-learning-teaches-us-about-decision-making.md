@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "what reinforcement learning teaches us about decision-making"
-date: 2026-07-22
+date: 2026-08-22
 ---
 
 something that has been on my mind a lot recently is how we optimally make decisions. i have been reading annie duke’s thinking in bets, which has emphasized looking at life through a probabilistic lens. it has helped me a lot in feeling empowered about how i navigate life through simply thinking of it as a game, where i understand the risks that i am taking. though, it is hard to maintain this perspective.
