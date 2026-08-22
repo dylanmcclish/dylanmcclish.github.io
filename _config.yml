@@ -1,0 +1,15 @@
+title: Dylan McClish
+description: >-
+  Dylan McClish — senior at Princeton University, Class of '27, studying
+  Operations Research and Financial Engineering with a minor in Mathematics.
+url: "https://dylanmcclish.github.io"
+author: Dylan McClish
+
+markdown: kramdown
+permalink: /blog/:title/
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - README.md

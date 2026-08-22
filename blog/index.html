@@ -1,0 +1,17 @@
+---
+layout: default
+title: my thoughts
+permalink: /blog/
+---
+<h1>my thoughts</h1>
+<ul class="post-list">
+  {% for post in site.posts %}
+  <li>
+    <div class="post-date">{{ post.date | date: "%B %-d, %Y" }}</div>
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+    {% if post.excerpt %}<p>{{ post.excerpt | strip_html | truncate: 200 }}</p>{% endif %}
+  </li>
+  {% else %}
+  <li><p>nothing here yet — check back soon.</p></li>
+  {% endfor %}
+</ul>
