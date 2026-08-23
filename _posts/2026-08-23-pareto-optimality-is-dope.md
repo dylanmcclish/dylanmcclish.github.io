@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "pareto optimality is dope"
+title: "pareto optimality is dope i think"
 date: 2026-08-23
 ---
 
