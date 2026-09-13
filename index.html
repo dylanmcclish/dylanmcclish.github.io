@@ -255,6 +255,20 @@
     <h2>research</h2>
 
     <div class="project">
+      <div class="project-thumb">
+        <img src="market-making-rl/thumb.png" alt="simulated limit order book mid-price, best bid, and best ask over a queue-reactive market-making episode" />
+      </div>
+      <div class="project-info">
+        <h3>market making via reinforcement learning under simulated market impact</h3>
+        <div class="meta">independent research · princeton university · python &amp; c++ · working paper · 2026</div>
+        <p>
+          this project revisits spooner et al.'s reinforcement learning market-making agent, but swaps the original historical order-book replay for a simulated one so i could actually study market impact, which historical data can't represent. i built a queue-reactive limit order book simulator (calibrated on real iex deep data) alongside a zero-intelligence control, then retrained spooner's basic and consolidated sarsa(&lambda;) agents in each. under simulated market impact, the consolidated agent trades far more actively than the basic one while still keeping its own inventory close to zero — echoing the same inventory-management advantage spooner reports on historical data.
+        </p>
+        <p style="margin-top: 6px; font-size: 0.87rem;"><a href="https://github.com/dylanmcclish/rl-market-making-qr-impact/blob/main/paper/main.pdf" target="_blank">paper →</a> &nbsp;·&nbsp; <a href="https://github.com/dylanmcclish/rl-market-making-qr-impact" target="_blank">code →</a></p>
+      </div>
+    </div>
+
+    <div class="project">
       <div class="project-thumb project-thumb--swarm">
         <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="40" cy="30" r="4" fill="#aaa" />
