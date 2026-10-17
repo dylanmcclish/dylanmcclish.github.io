@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "ansatz and the brain"
-date: 2026-08-17
+date: 2026-10-17
 ---
 
 in optimal learning, after modeling the objective and dynamics of a problem, one is confronted with the inevitable need to actually solve said problem for an optimal solution. in these situations, we are often given a problem that involves multiple coupled equations. namely, it is a system of equations that we must optimize.
